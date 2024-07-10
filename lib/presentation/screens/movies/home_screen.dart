@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mormovies/config/constants/environment.dart';
 
 class HomeScreen extends StatelessWidget {
   static const name = 'home-screen';
@@ -11,7 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text (Environment.theMovieDbKey),
+        child: Placeholder(),
       ),
     );
   }
