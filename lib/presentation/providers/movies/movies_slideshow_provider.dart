@@ -4,11 +4,11 @@ import 'movies_providers.dart';
 import 'package:mormovies/domain/entities/movie.dart';
 
 final moviesSlideshowProvider = Provider<List<Movie>>((ref) {
-  final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-
+  final List<Movie> nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+  late final List<Movie> bestNowPlayingMovies;
   if (nowPlayingMovies.isEmpty) return [];
 
-  nowPlayingMovies.sort((movie, movie2) => movie.voteAverage.compareTo(movie2.voteAverage));
+  bestNowPlayingMovies = [...nowPlayingMovies]..sort((movie, movie2) => movie2.voteAverage.compareTo(movie.voteAverage));
 
-  return nowPlayingMovies.sublist(0, 6);
+  return bestNowPlayingMovies.sublist(0, 6);
 });
