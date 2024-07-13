@@ -81,69 +81,72 @@ class _Slide extends StatelessWidget {
     final starIconData =
         movie.voteAverage > 7 ? Icons.star : Icons.star_half_outlined;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 140,
-            height: 200,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                fit: BoxFit.cover,
-                movie.posterPath,
-                width: 140,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ));
-                  }
-                  return FadeIn(child: child);
-                },
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 140,
+              height: 210,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  fit: BoxFit.cover,
+                  movie.posterPath,
+                  width: 140,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ));
+                    }
+                    return FadeIn(child: child);
+                  },
+                ),
               ),
             ),
-          ),
-          //* Title
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            width: 140,
-            child: Text(
-              movie.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: textStyle.titleSmall,
+            //* Title
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              width: 140,
+              child: Text(
+                movie.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: textStyle.titleSmall,
+              ),
             ),
-          ),
-          //* Rating
-          SizedBox(
-            width: 140,
-            child: Row(
-              children: [
-                Icon(
-                  starIconData,
-                  color: Colors.yellow.shade700,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  movie.voteAverage.toStringAsFixed(2),
-                  style: textStyle.bodyMedium,
-                ),
-                // const SizedBox(width: 10,),
-                const Spacer(),
-                Text(
-                  '(${HumanFormats.number(movie.popularity)})',
-                  style: textStyle.bodyMedium,
-                ),
-              ],
-            ),
-          )
-        ],
+            //* Rating
+            SizedBox(
+              width: 140,
+              child: Row(
+                children: [
+                  Icon(
+                    starIconData,
+                    color: Colors.yellow.shade700,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    movie.voteAverage.toStringAsFixed(2),
+                    style: textStyle.bodyMedium,
+                  ),
+                  // const SizedBox(width: 10,),
+                  const Spacer(),
+                  Text(
+                    '(${HumanFormats.number(movie.popularity)})',
+                    style: textStyle.bodyMedium,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
