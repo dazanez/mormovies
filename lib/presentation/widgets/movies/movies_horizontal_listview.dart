@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mormovies/config/helpers/human_formats.dart';
 import 'package:mormovies/domain/entities/movie.dart';
 
-class MoviesHorizontalListView extends StatelessWidget {
+class MoviesHorizontalListView extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
   final String? subtitle;
@@ -18,21 +18,50 @@ class MoviesHorizontalListView extends StatelessWidget {
   });
 
   @override
+  State<MoviesHorizontalListView> createState() =>
+      _MoviesHorizontalListViewState();
+}
+
+class _MoviesHorizontalListViewState extends State<MoviesHorizontalListView> {
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if (widget.loadNextPage == null) return;
+
+      if (scrollController.position.pixels + 200 >=
+          scrollController.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 350,
       child: Column(
         children: [
-          if (title != null || subtitle != null)
-            _Title(title: title, subtitle: subtitle),
+          if (widget.title != null || widget.subtitle != null)
+            _Title(title: widget.title, subtitle: widget.subtitle),
           Expanded(
             child: ListView.builder(
-              itemCount: movies.length,
+              controller: scrollController,
+              itemCount: widget.movies.length,
               scrollDirection: Axis.horizontal,
               physics: const ClampingScrollPhysics(),
-
               itemBuilder: (context, index) {
-                return FadeInRight(child: _Slide(movie: movies[index]));
+                return FadeInRight(child: _Slide(movie: widget.movies[index]));
               },
             ),
           )
@@ -49,7 +78,8 @@ class _Slide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
-    final starIconData = movie.voteAverage > 6 ? Icons.star : Icons.star_half_outlined;
+    final starIconData =
+        movie.voteAverage > 6 ? Icons.star : Icons.star_half_outlined;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -93,12 +123,23 @@ class _Slide extends StatelessWidget {
             width: 140,
             child: Row(
               children: [
-                Icon(starIconData, color: Colors.yellow.shade700,),
-                const SizedBox(width: 5,),
-                Text(movie.voteAverage.toStringAsFixed(2), style: textStyle.bodyMedium,),
+                Icon(
+                  starIconData,
+                  color: Colors.yellow.shade700,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  movie.voteAverage.toStringAsFixed(2),
+                  style: textStyle.bodyMedium,
+                ),
                 // const SizedBox(width: 10,),
                 const Spacer(),
-                Text('(${HumanFormats.number(movie.popularity)})', style: textStyle.bodyMedium,),
+                Text(
+                  '(${HumanFormats.number(movie.popularity)})',
+                  style: textStyle.bodyMedium,
+                ),
               ],
             ),
           )
