@@ -79,7 +79,7 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     final starIconData =
-        movie.voteAverage > 6 ? Icons.star : Icons.star_half_outlined;
+        movie.voteAverage > 7 ? Icons.star : Icons.star_half_outlined;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
