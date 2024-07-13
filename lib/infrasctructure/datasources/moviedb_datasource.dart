@@ -31,4 +31,16 @@ class MoviedbDatasource extends MoviesDatasource {
         '/movie/popular',
         queryParameters: {'page': page},
       );
+
+  @override
+  Future<List<Movie>> getTopRated({int page = 1}) async => await _getMoviesFromPath(
+        '/movie/top_rated',
+        queryParameters: {'page': page},
+      );
+
+  @override
+  Future<List<Movie>> getUpcoming({int page = 1}) async => await _getMoviesFromPath(
+        '/movie/upcoming',
+        queryParameters: {'page': page},
+      );
 }

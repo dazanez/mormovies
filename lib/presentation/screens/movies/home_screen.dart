@@ -30,15 +30,18 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   void initState() {
     super.initState();
 
-    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    for (final movieProvider in allMoviesProviders) {
+      ref.read(movieProvider.notifier).loadNextPage();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final slideshowMovies = ref.watch(moviesSlideshowProvider);
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
-    final slideshowMovies = ref.watch(moviesSlideshowProvider);
+    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
 
     if (slideshowMovies.isEmpty) {
       return const Center(
@@ -74,6 +77,14 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                           .loadNextPage(),
                     ),
                     MoviesHorizontalListView(
+                      movies: upcomingMovies,
+                      title: 'Upcoming',
+                      subtitle: 'Soon',
+                      loadNextPage: () => ref
+                          .read(upcomingMoviesProvider.notifier)
+                          .loadNextPage(),
+                    ),
+                    MoviesHorizontalListView(
                       movies: popularMovies,
                       title: 'Popular',
                       // subtitle: 'Now',
@@ -82,11 +93,11 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                           .loadNextPage(),
                     ),
                     MoviesHorizontalListView(
-                      movies: nowPlayingMovies,
-                      title: 'Playing',
-                      subtitle: 'In theaters',
+                      movies: topRatedMovies,
+                      title: 'Top rated',
+                      subtitle: 'The bests 🔥',
                       loadNextPage: () => ref
-                          .read(nowPlayingMoviesProvider.notifier)
+                          .read(topRatedMoviesProvider.notifier)
                           .loadNextPage(),
                     ),
                     const SizedBox(
