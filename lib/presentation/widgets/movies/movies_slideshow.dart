@@ -61,6 +61,7 @@ class _Slide extends StatelessWidget {
                   }
                   return FadeIn(child: child);
                 },
+                errorBuilder: (context, error, stackTrace) => const Center(child: Text('Ups, We had an error getting the image')),
               ),
               Positioned(
                 height: 50,

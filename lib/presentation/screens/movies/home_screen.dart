@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:mormovies/presentation/providers/providers.dart';
-import 'package:mormovies/presentation/screens/screens.dart';
 import 'package:mormovies/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -36,6 +35,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideshowMovies = ref.watch(moviesSlideshowProvider);
 
     if (slideshowMovies.isEmpty) {
@@ -48,7 +48,12 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     return Column(
       children: [
         const CustomAppBar(),
-        MoviesSlideshow(moviesList: slideshowMovies)
+        MoviesSlideshow(moviesList: slideshowMovies),
+        MoviesHorizontalListView(
+          movies: nowPlayingMovies,
+          title: 'Playing',
+          subtitle: 'In theaters',
+        )
       ],
     );
   }
