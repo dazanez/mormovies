@@ -3,6 +3,7 @@ import 'movies_providers.dart';
 
 import 'package:mormovies/domain/entities/movie.dart';
 
+/// This depends on the [nowPlayingMoviesProvider], and takes the 6 best rated of it
 final moviesSlideshowProvider = Provider<List<Movie>>((ref) {
   final List<Movie> nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
   late final List<Movie> bestNowPlayingMovies;
