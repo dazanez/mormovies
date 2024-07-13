@@ -45,15 +45,57 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       ));
     }
 
-    return Column(
-      children: [
-        const CustomAppBar(),
-        MoviesSlideshow(moviesList: slideshowMovies),
-        MoviesHorizontalListView(
-          movies: nowPlayingMovies,
-          title: 'Playing',
-          subtitle: 'In theaters',
-          loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            titlePadding: EdgeInsets.zero,
+            title: CustomAppBar(),
+          ),
+        ),
+
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: 1,
+            (context, index) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // const CustomAppBar(),
+                    MoviesSlideshow(moviesList: slideshowMovies),
+                    MoviesHorizontalListView(
+                      movies: nowPlayingMovies,
+                      title: 'Playing',
+                      subtitle: 'In theaters',
+                      loadNextPage: () => ref
+                          .read(nowPlayingMoviesProvider.notifier)
+                          .loadNextPage(),
+                    ),
+                    MoviesHorizontalListView(
+                      movies: nowPlayingMovies,
+                      title: 'Best rated',
+                      subtitle: 'Ever',
+                      loadNextPage: () => ref
+                          .read(nowPlayingMoviesProvider.notifier)
+                          .loadNextPage(),
+                    ),
+                    MoviesHorizontalListView(
+                      movies: nowPlayingMovies,
+                      title: 'Playing',
+                      subtitle: 'In theaters',
+                      loadNextPage: () => ref
+                          .read(nowPlayingMoviesProvider.notifier)
+                          .loadNextPage(),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
         )
       ],
     );
