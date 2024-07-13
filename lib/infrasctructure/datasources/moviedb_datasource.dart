@@ -3,28 +3,32 @@ import 'package:mormovies/config/constants/environment.dart';
 import 'package:mormovies/domain/datasources/movies_datasource.dart';
 import 'package:mormovies/domain/entities/movie.dart';
 import 'package:mormovies/infrasctructure/mappers/movie_mapper.dart';
-import 'package:mormovies/infrasctructure/models/moviedb/moviedb_response.dart';
 
 class MoviedbDatasource extends MoviesDatasource {
-  final dio = Dio(BaseOptions(
-      baseUrl: 'https://api.themoviedb.org/3',
-      queryParameters: {
-        'api_key': Environment.theMovieDbKey,
-        'language': 'es-CO'
-      }));
+  final dio = Dio(
+    BaseOptions(baseUrl: 'https://api.themoviedb.org/3', queryParameters: {
+      'api_key': Environment.theMovieDbKey,
+      'language': 'es-CO'
+    }),
+  );
+
+  Future<List<Movie>> _getMoviesFromPath(String path,
+      {Map<String, dynamic>? queryParameters}) async {
+    final response = await dio.get(path, queryParameters: queryParameters);
+    return MovieMapper.moviedbJsonToMovieEntityList(moviedbJson: response.data);
+  }
 
   @override
-  Future<List<Movie>> getNowPlaying({int page = 1}) async {
-    final response = await dio.get(
-      '/movie/now_playing',
-      queryParameters: {'page': page},
-    );
-    final moviedbReponse = MoviedbResponse.fromJson(response.data);
-    final List<Movie> movies = moviedbReponse.results
-        .map((moviedb) => MovieMapper.movieDbToEntity(moviedb))
-        .where((movie) => movie.posterPath != 'no-poster')
-        .toList();
+  Future<List<Movie>> getNowPlaying({int page = 1}) async =>
+      await _getMoviesFromPath(
+        '/movie/now_playing',
+        queryParameters: {'page': page},
+      );
 
-    return movies;
-  }
+  @override
+  Future<List<Movie>> getPopular({int page = 1}) async =>
+      await _getMoviesFromPath(
+        '/movie/popular',
+        queryParameters: {'page': page},
+      );
 }
