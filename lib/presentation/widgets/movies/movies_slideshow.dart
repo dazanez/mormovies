@@ -22,7 +22,9 @@ class MoviesSlideshow extends StatelessWidget {
         pagination: SwiperPagination(
             margin: const EdgeInsets.only(top: 0),
             builder: DotSwiperPaginationBuilder(
-                activeColor: colors.primary, color: colors.secondary)),
+              activeColor: colors.primary,
+              color: colors.secondary,
+            )),
         itemCount: moviesList.length,
         itemBuilder: (context, index) => _Slide(movie: moviesList[index]),
       ),
@@ -59,9 +61,12 @@ class _Slide extends StatelessWidget {
                     return const DecoratedBox(
                         decoration: BoxDecoration(color: Colors.black12));
                   }
-                  return FadeIn(child: child);
+                  return FadeIn(
+                      duration: const Duration(milliseconds: 200),
+                      child: child);
                 },
-                errorBuilder: (context, error, stackTrace) => const Center(child: Text('Ups, We had an error getting the image')),
+                errorBuilder: (context, error, stackTrace) => const Center(
+                    child: Text('Ups, we had an error getting the image')),
               ),
               Positioned(
                 height: 50,
@@ -93,7 +98,8 @@ class _SlideText extends StatelessWidget {
 
   const _SlideText(this.title);
 
-  static const titleStyle = TextStyle(color: Colors.white70, fontSize: 20, fontWeight: FontWeight.w300);
+  static const titleStyle = TextStyle(
+      color: Colors.white70, fontSize: 20, fontWeight: FontWeight.w300);
 
   @override
   Widget build(BuildContext context) {
